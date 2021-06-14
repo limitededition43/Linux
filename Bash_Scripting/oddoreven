@@ -1,0 +1,29 @@
+#!/bin/bash
+
+#Input file name : sample.csv
+
+oddoreven(){
+	if [ $(($1%2)) -eq 0 ]
+	then
+		echo $1 is even
+	else
+		echo $1 is odd
+	fi
+}
+
+if [ "$#" -ne 0 ]; then
+	if [ -e sample.csv ]; then
+		while read line
+		do
+			oddoreven $(echo $line | awk -F "," -v column="$1" '{print $column}')
+			sleep 1
+		done < sample.csv
+	else 
+		echo "[!] File Empty or not found"
+	fi
+else
+	echo -e "
+	[!] No column specified
+	[+]\tUsage : $0 <index>
+	"
+fi

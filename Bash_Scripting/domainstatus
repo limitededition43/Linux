@@ -1,0 +1,45 @@
+#!/bin/bash
+
+#Day3 : Activity : Find available domains
+
+
+Usage() {
+        echo -e "
+	[+] Usage: $0 -d <domain>
+        	\t -h   --help       -       Display help menu
+        	\t -d [optional]     -       Domain Name
+        	\t -f [optional]     -       File containing Domains list
+"
+}
+
+validate(){
+                if [ "$(/usr/bin/whois $domain | grep 'IANA ID')" ];then
+                        echo "$domain : Available" >> $domain.txt ; echo "[+] Success: Domain Available - Successfully saved to $domain.txt file";
+                else
+                        echo "[!] Error: Domain not found - Failed to write to output file";
+                fi
+}
+
+validate_from_file(){
+		while read -r line;
+		do
+			if [ "$(/usr/bin/whois $line | grep 'IANA ID')" ];then
+				echo "$line:Available"
+			else 
+				echo "$line: Invalid"
+			fi
+		done < $file
+}
+
+
+if [ $# -ne 0 ]; then
+	while getopts ":f:d:h" flag; do
+		case $flag in
+			h) Usage;;
+			d) domain=${OPTARG};validate;;
+			f) file=${OPTARG};validate_from_file echo "$file";;
+		esac
+	done
+else
+	Usage
+fi

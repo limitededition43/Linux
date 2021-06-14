@@ -1,0 +1,37 @@
+#!/bin/bash
+
+usage(){
+	echo -e "
+	[+] Usage: $0 find -n <file_name> -t <type> -p <path>
+	   -n		- Name of file
+	   -t		- Type [d -directory ; f - file ; l-Symlink ]
+	   -p		- path to search for
+	"
+}
+
+finder(){
+	find $1 -name $2 -type $3
+	echo `readlink -f $2`
+	exit 1
+}
+
+if [ $# == 6 ];then
+	while getopts "n:t:p:" flags; do
+		case $flags in 
+			n)
+			  name=${OPTARG};;
+			t)
+			  type=${OPTARG};;
+			p)
+			  path=${OPTARG};;
+			*)
+			  usage; exit 1;;
+		esac
+	done
+
+finder $path $name $type
+
+else
+	 echo No arguments supplied
+fi
+

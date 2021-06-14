@@ -1,0 +1,27 @@
+#!/bin/bash
+
+function compare(){
+	if [[ $1 == ?(-)+([0-9]) ]];then
+		echo "[+] The numbers $1 and $2 are equal "
+	else 
+		if [ $1 == $2 ];then
+			echo "[+] The strings $1 and $2 are identical"
+		else
+			echo "Not equal"
+		fi
+	fi
+}
+
+function checkfile(){
+	if [ -a $1 ];then echo "File exists";else echo "File not found";fi
+	[[ -w $1 ]] && echo "Writable"
+	[[ -x $1 ]] && echo "Executable"
+}
+
+
+while getopts "c::f:h" args; do
+	case $args in
+		c) compare $2 $3;;
+		f) checkfile "$2";;
+	esac
+done

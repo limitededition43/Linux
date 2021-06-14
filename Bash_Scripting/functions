@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Structure: function function_name() { commands } or function_name(){ commands }
+
+# Variable $Greet is by default a global variable and 
+
+Greet="Greetings from global variable" 				#All variables are global by default and can be accessed anywhere withing the program.
+
+Hello(){
+	echo "Hello $1 $Greet" 					#parse the first positional argument being passed
+}
+
+Get_Name(){
+	read -p "Enter your name: " name			#Get name from user
+	local Greet="Greetings from local variable"		#Local variables are explicitly declared using local keyword and are accessible only within the function.
+	echo $Greet
+}
+
+Get_Name							#Function call
+Hello $name							#Function call with arguments. The global variable name holds the value even outside the Get_Name function block. 
+
